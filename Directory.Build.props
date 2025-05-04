@@ -1,0 +1,90 @@
+<Project>
+
+    <PropertyGroup>
+        <SolutionDir Condition="'$(SolutionDir)'==''">$(MSBuildThisFileDirectory)</SolutionDir>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Version>1.0.0</Version>
+        <Authors>Sebastian Göls</Authors>
+        <Copyright>Copyright © 2025 - $([System.DateTime]::UtcNow.Year) $(Authors)</Copyright>
+        <PackageLicenseExpression>GPL-2.0-only</PackageLicenseExpression>
+        <NeutralLanguage>en</NeutralLanguage>
+        <UICulture>$(NeutralCulture)</UICulture>
+
+        <!-- Convert .svg files to .ico using custom resolution of 248x248 here: https://www.aconvert.com/icon/svg-to-ico/ -->
+        <ApplicationIcon Condition="Exists('$(SolutionDir)resources/application.ico')">$(SolutionDir)resources/application.ico</ApplicationIcon>
+    </PropertyGroup>
+
+    <PropertyGroup Label="Non-release builds">
+        <Release Condition="'$(Release)' == ''">false</Release>
+
+        <DefineConstants Condition="'$(Configuration)' == 'Debug' OR !$(Release)">$(DefineConstants);PRERELEASE</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Label="Language and Runtime Features">
+        <DefaultTargetFramework>net9.0</DefaultTargetFramework>
+        <TargetFramework>$(DefaultTargetFramework)</TargetFramework>
+        <Nullable>enable</Nullable>
+        <Configurations>Debug;Release</Configurations>
+        <LangVersion>preview</LangVersion>
+        <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    </PropertyGroup>
+
+    <PropertyGroup Label="Compiler settings">
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+        <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+        <Deterministic>true</Deterministic>
+        <ErrorReport>none</ErrorReport>
+        <NoWarn>CA1003;CA1028;CA1031;CA1040;CA1303;CA1309;CA1716;CA1724;CA1812;NU1507</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup Label="Files to accompany the output">
+        <Content Condition="Exists('./overlay')" Include="./overlay/**/*.*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+            <Visible>false</Visible>
+        </Content>
+        <Content Condition="Exists('./overlay')" Include="./overlay/**/*.*">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <Link>overlay/%(RecursiveDir)%(Filename)%(Extension)</Link>
+        </Content>
+        <Content Condition="Exists('./overlay-$(Configuration)')" Include="./overlay-$(Configuration)/**/*.*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+            <Visible>false</Visible>
+        </Content>
+        <Content Condition="Exists('./overlay-$(Configuration)')" Include="./overlay-$(Configuration)/**/*.*">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <Link>overlay/%(RecursiveDir)%(Filename)%(Extension)</Link>
+        </Content>
+    </ItemGroup>
+
+    <PropertyGroup Label="No debugging Release builds" Condition="'$(Configuration)' == 'Release'">
+        <DebugSymbols>false</DebugSymbols>
+        <DebugType>none</DebugType>
+        <DebuggerSupport>false</DebuggerSupport>
+        <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsAsErrors/>
+    </PropertyGroup>
+
+    <!-- Trimming functionality as described on https://docs.microsoft.com/dotnet/core/deploying/trim-self-contained -->
+    <PropertyGroup Label="Trimming release binaries" Condition="'$(Configuration)' == 'Release'">
+        <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
+        <EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
+        <EventSourceSupport>false</EventSourceSupport>
+        <HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+        <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(Configuration)' == 'Release'">
+        <TrimmerRootDescriptor Condition="Exists('./TrimmerRoots.xml')" Include="./TrimmerRoots.xml"/>
+    </ItemGroup>
+
+</Project>

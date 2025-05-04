@@ -1,0 +1,21 @@
+<Project>
+
+    <PropertyGroup>
+        <AvaloniaVersion>11.3.0</AvaloniaVersion>
+    </PropertyGroup>
+
+    <ItemGroup Label="General">
+        <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0"/>
+        <PackageVersion Include="Microsoft.CodeAnalysis.ResxSourceGenerator" Version="3.11.0-beta1.24324.1"/>
+        <PackageVersion Include="Newtonsoft.Json" Version="13.0.3"/>
+    </ItemGroup>
+
+    <ItemGroup Label="Avalonia">
+        <PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)"/>
+        <PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)"/>
+        <PackageVersion Include="Avalonia.Themes.Simple" Version="$(AvaloniaVersion)"/>
+        <PackageVersion Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)"/>
+        <PackageVersion Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)"/>
+    </ItemGroup>
+
+</Project>

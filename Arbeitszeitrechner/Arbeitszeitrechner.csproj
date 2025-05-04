@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <OutputType Condition="$(RuntimeIdentifier.StartsWith('win-'))">WinExe</OutputType>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+
+        <ApplicationIcon Condition="Exists('./resources/shrek.ico')">./resources/shrek.ico</ApplicationIcon>
+    </PropertyGroup>
+
+    <PropertyGroup Label="No debugging Release builds" Condition="'$(Configuration)' == 'Release'">
+        <PublishSingleFile>true</PublishSingleFile>
+        <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+
+        <PublishTrimmed>true</PublishTrimmed>
+        <TrimMode>full</TrimMode>
+
+        <ILLinkTreatWarningsAsErrors>false</ILLinkTreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <PropertyGroup Label="Avalonia">
+        <MvvmToolkitEnableINotifyPropertyChangingSupport>false</MvvmToolkitEnableINotifyPropertyChangingSupport>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AvaloniaResource Include="resources/**"/>
+    </ItemGroup>
+
+    <ItemGroup Label="PackageReferences">
+        <PackageReference Include="Avalonia"/>
+        <PackageReference Include="Avalonia.Desktop"/>
+        <PackageReference Include="Avalonia.Themes.Simple"/>
+        <PackageReference Include="Avalonia.Fonts.Inter"/>
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics"/>
+        <PackageReference Include="CommunityToolkit.Mvvm"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.ResxSourceGenerator" PrivateAssets="all"/>
+        <PackageReference Include="Newtonsoft.Json"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Update="Localization/Strings.resx" EmitFormatMethods="true" Public="true"/>
+    </ItemGroup>
+
+</Project>
