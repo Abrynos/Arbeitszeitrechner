@@ -1,0 +1,111 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Arbeitszeitrechner.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converters="clr-namespace:Arbeitszeitrechner.Converters"
+        xmlns:localization="clr-namespace:Arbeitszeitrechner.Localization"
+        mc:Ignorable="d"
+        x:Class="Arbeitszeitrechner.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="{x:Static localization:Strings.WindowTitle}"
+        Icon="/resources/shrek.ico"
+        WindowStartupLocation="CenterScreen"
+        SizeToContent="WidthAndHeight"
+        CanResize="False"
+        Topmost="True">
+    <Window.Styles>
+        <Style Selector="NumericUpDown">
+            <Setter Property="MinWidth" Value="60"/>
+            <Setter Property="FormatString" Value="00"/>
+            <Setter Property="Increment" Value="1"/>
+            <Setter Property="Minimum" Value="0"/>
+        </Style>
+    </Window.Styles>
+
+    <Grid HorizontalAlignment="Left"
+          VerticalAlignment="Center"
+          Margin="8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0"
+               Grid.Column="0"
+               Content="{x:Static localization:Strings.StartTimeLabel}"
+               VerticalAlignment="Center"
+               Margin="5"/>
+
+
+        <Grid Grid.Row="0"
+              Grid.Column="1"
+              Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <NumericUpDown Grid.Column="0"
+                           Value="{Binding StartHours}"
+                           Minimum="0"
+                           Maximum="23"/>
+            <NumericUpDown Grid.Column="1"
+                           Value="{Binding StartMinutes}"
+                           Minimum="0"
+                           Maximum="59"/>
+        </Grid>
+
+        <Label Grid.Row="1"
+               Grid.Column="0"
+               Content="{x:Static localization:Strings.EndTimeLabel}"
+               VerticalAlignment="Center"
+               Margin="5"/>
+
+        <Grid Grid.Row="1"
+              Grid.Column="1"
+              Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <NumericUpDown Grid.Column="0"
+                           Value="{Binding EndTime.Hours}"
+                           IsEnabled="False"
+                           Maximum="23"/>
+            <NumericUpDown Grid.Column="1"
+                           Value="{Binding EndTime.Minutes}"
+                           IsEnabled="False"
+                           Maximum="59"/>
+        </Grid>
+
+        <Label Grid.Row="2"
+               Grid.Column="0"
+               Content="{x:Static localization:Strings.IsTimeLabel}"
+               VerticalAlignment="Center"
+               Margin="5"/>
+
+        <Grid Grid.Row="2"
+              Grid.Column="1"
+              Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <NumericUpDown Grid.Column="0"
+                           Value="{Binding IsTime.Hours, Mode=OneWay, Converter={converters:IntMinimumConverter}, ConverterParameter=0}"
+                           IsEnabled="False"
+                           Maximum="23"/>
+            <NumericUpDown Grid.Column="1"
+                           Value="{Binding IsTime.Minutes, Mode=OneWay, Converter={converters:IntMinimumConverter}, ConverterParameter=0}"
+                           IsEnabled="False"
+                           Maximum="59"/>
+        </Grid>
+    </Grid>
+
+</Window>

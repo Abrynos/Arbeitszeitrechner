@@ -1,0 +1,13 @@
+{
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": [
+		"config:base",
+		":assignee(Abrynos)",
+		":automergeBranch",
+		":automergeDigest",
+		":automergeMinor",
+		":disableDependencyDashboard",
+		":disableRateLimiting"
+	],
+	"rebaseWhen": "conflicted"
+}

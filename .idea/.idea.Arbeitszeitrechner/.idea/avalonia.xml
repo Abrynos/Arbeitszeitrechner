@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="Arbeitszeitrechner/App.axaml" value="Arbeitszeitrechner/Arbeitszeitrechner.csproj" />
+        <entry key="Arbeitszeitrechner/Controls/TimePicker.axaml" value="Arbeitszeitrechner/Arbeitszeitrechner.csproj" />
+        <entry key="Arbeitszeitrechner/Views/MainWindow.axaml" value="Arbeitszeitrechner/Arbeitszeitrechner.csproj" />
+      </map>
+    </option>
+  </component>
+</project>

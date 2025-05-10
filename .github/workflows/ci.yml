@@ -1,0 +1,184 @@
+name: CI
+
+on: [ push, pull_request ]
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  DOTNET_NOLOGO: true
+  DOTNET_SDK_VERSION: 9.0
+  CONFIGURATION: Release
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - os: ubuntu-latest
+            runtime: linux-x64
+          - os: windows-latest
+            runtime: win-x64
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+        with:
+          show-progress: false
+
+      - name: Set .NET core up
+        uses: actions/setup-dotnet@v4.3.1
+        with:
+          dotnet-version: ${{ env.DOTNET_SDK_VERSION }}
+
+      - name: Verify .NET core
+        run: dotnet --info
+
+      - name: Publish ${{ matrix.runtime }} application on Unix
+        if: startsWith(matrix.os, 'ubuntu-') || startsWith(matrix.os, 'macos-')
+        env:
+          RUNTIME: ${{ matrix.runtime }}
+        run: dotnet publish Arbeitszeitrechner --configuration "${{ env.CONFIGURATION }}" --runtime "${{ env.RUNTIME }}" --self-contained --output "${GITHUB_WORKSPACE}/out/${{ env.RUNTIME }}/" -p:ContinuousIntegrationBuild=true
+
+      - name: Publish ${{ matrix.runtime }} application on Windows
+        if: startsWith(matrix.os, 'windows-')
+        env:
+          RUNTIME: ${{ matrix.runtime }}
+        run: dotnet publish Arbeitszeitrechner --configuration "${{ env.CONFIGURATION }}" --runtime "${{ env.RUNTIME }}" --self-contained --output "$env:GITHUB_WORKSPACE\out\${{ env.RUNTIME }}\" -p:ContinuousIntegrationBuild=true
+
+      - name: Zip ${{ matrix.runtime }} files on Unix
+        if: startsWith(matrix.os, 'ubuntu-') || startsWith(matrix.os, 'macos-')
+        env:
+          RUNTIME: ${{ matrix.runtime }}
+        run: |
+          set -euo pipefail
+
+          zip_name="Arbeitszeitrechner-${{ env.RUNTIME }}.zip"
+          seven_zip_args="-mx=1"
+          zip_args="-1"
+
+          # Improve compression for releases
+          case "$GITHUB_REF" in
+            "refs/tags/"*)
+              seven_zip_args="-mx=9 -mfb=258 -mpass=15"
+              zip_args="-9"
+            ;;
+          esac
+
+          case "$(uname -s)" in
+            "Darwin")
+              # Use zip on MacOS as 7z does not handle file permissions there
+              if command -v zip >/dev/null; then
+                (
+                  cd "${GITHUB_WORKSPACE}/out/${{ env.RUNTIME }}"
+                  zip -q -r $zip_args "../$zip_name" .
+                )
+              else
+                7z a -bd -slp -tzip -mm=Deflate $seven_zip_args "${GITHUB_WORKSPACE}/out/$zip_name" "${GITHUB_WORKSPACE}/out/${{ env.RUNTIME }}/*"
+              fi
+              ;;
+            *)
+              if command -v 7z >/dev/null; then
+                7z a -bd -slp -tzip -mm=Deflate $seven_zip_args "${GITHUB_WORKSPACE}/out/$zip_name" "${GITHUB_WORKSPACE}/out/${{ env.RUNTIME }}/*"
+              else
+                (
+                  cd "${GITHUB_WORKSPACE}/out/${{ env.RUNTIME }}"
+                  zip -q -r $zip_args "../$zip_name" .
+                )
+              fi
+              ;;
+          esac
+
+      - name: Zip ${{ matrix.runtime }} files on Windows
+        if: startsWith(matrix.os, 'windows-')
+        env:
+          RUNTIME: ${{ matrix.runtime }}
+        shell: pwsh
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+          $ProgressPreference = 'SilentlyContinue'
+
+          $zipName="Arbeitszeitrechner-${{ env.RUNTIME }}.zip"
+          
+          $sevenZipArgs = '-mx=1'
+
+          # Improve compression for releases
+          if ($env:GITHUB_REF -like 'refs/tags/*') {
+            $sevenZipArgs = '-mx=9', '-mfb=258', '-mpass=15'
+          }
+
+          7z a -bd -slp -tzip -mm=Deflate $sevenZipArgs "$env:GITHUB_WORKSPACE\out\$zipName" "$env:GITHUB_WORKSPACE\out\$env:RUNTIME\*"
+
+          if ($LastExitCode -ne 0) {
+            throw "Last command failed."
+          }
+
+      - name: Upload Arbeitszeitrechner-${{ matrix.runtime }}
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          if-no-files-found: error
+          name: Arbeitszeitrechner-${{ matrix.runtime }}
+          path: out/Arbeitszeitrechner-${{ matrix.runtime }}.zip
+  
+  release:
+    if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/') }}
+    needs: publish
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+        with:
+          show-progress: false
+
+      - name: Download linux-x64 artifact
+        uses: actions/download-artifact@v4.3.0
+        with:
+          name: Arbeitszeitrechner-linux-x64
+          path: out
+
+      - name: Download win-x64 artifact
+        uses: actions/download-artifact@v4.3.0
+        with:
+          name: Arbeitszeitrechner-win-x64
+          path: out
+
+      - name: Prepare release files
+        shell: sh
+        run: |
+          set -eu
+          cp LICENSE out/LICENSE.txt
+
+      - name: Generate SHA-512 checksums
+        shell: sh
+        working-directory: out
+        run: |
+          set -eu
+          sha512sum *.zip > SHA512SUMS
+
+      - name: Upload SHA512SUMS
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          if-no-files-found: error
+          name: SHA512SUMS
+          path: out/SHA512SUMS
+
+      - name: Create GitHub release
+        uses: ncipollo/release-action@v1.16.0
+        with:
+          allowUpdates: true
+          artifactErrorsFailBuild: true
+          artifacts: "out/*"
+          bodyFile: .github/RELEASE_TEMPLATE.md
+          makeLatest: true
+          name: 'Arbeitszeitrechner ${{ github.ref_name }}'
+          prerelease: true
+          updateOnlyUnreleased: true
