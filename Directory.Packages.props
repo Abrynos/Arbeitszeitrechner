@@ -7,7 +7,7 @@
     <ItemGroup Label="General">
         <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0"/>
         <PackageVersion Include="Microsoft.CodeAnalysis.ResxSourceGenerator" Version="5.0.0-1.25277.114"/>
-        <PackageVersion Include="Newtonsoft.Json" Version="13.0.3"/>
+        <PackageVersion Include="Newtonsoft.Json" Version="13.0.4"/>
     </ItemGroup>
 
     <ItemGroup Label="Avalonia">
