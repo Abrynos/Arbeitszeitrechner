@@ -1,6 +1,6 @@
 # Arbeitszeitrechner
 
-[![Build status](https://img.shields.io/github/actions/workflow/status/Abrynos/Arbeitszeitrechner/ci.yml?branch=main&label=Build&logo=github)](https://github.com/Abrynos/Arbeitszeitrechner/actions)
+[![Build status](https://img.shields.io/github/actions/workflow/status/Abrynos/Arbeitszeitrechner/ci.yml?branch=master&label=Build&logo=github)](https://github.com/Abrynos/Arbeitszeitrechner/actions)
 [![GitHub release version](https://img.shields.io/github/v/release/Abrynos/Arbeitszeitrechner?label=Stable&logo=github)](https://github.com/Abrynos/Arbeitszeitrechner/releases/latest)
 [![License](https://img.shields.io/github/license/Abrynos/Arbeitszeitrechner)](https://github.com/Abrynos/Arbeitszeitrechner/blob/master/LICENSE)
 
