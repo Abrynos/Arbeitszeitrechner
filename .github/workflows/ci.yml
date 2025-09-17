@@ -178,6 +178,7 @@ jobs:
           artifactErrorsFailBuild: true
           artifacts: "out/*"
           bodyFile: .github/RELEASE_TEMPLATE.md
+          immutableCreate: true
           makeLatest: true
           name: 'Arbeitszeitrechner ${{ github.ref_name }}'
           prerelease: true
