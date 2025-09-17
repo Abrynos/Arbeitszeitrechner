@@ -129,7 +129,9 @@ internal sealed partial class MainWindowViewModel : ViewModelBase, IDisposable, 
         try
         {
             string content = File.ReadAllText(DbFilePath);
+#pragma warning disable IL2026 // We only need to deserialize properties we actually work with
             db = JsonConvert.DeserializeObject<AppDatabaseViewModel>(content, JsonSettings);
+#pragma warning restore IL2026
         }
         catch (Exception) { }
 
@@ -148,7 +150,9 @@ internal sealed partial class MainWindowViewModel : ViewModelBase, IDisposable, 
             await Task.Delay(400).ConfigureAwait(false);
             try
             {
+#pragma warning disable IL2026 // We only need to serialize properties we actually work with
                 await File.WriteAllTextAsync(DbFilePath, JsonConvert.SerializeObject(Database, JsonSettings)).ConfigureAwait(false);
+#pragma warning restore IL2026
             }
             catch (Exception) { }
             finally
