@@ -34,7 +34,7 @@ internal sealed partial class AppDatabaseViewModel : ViewModelBase
         { DayOfWeek.Tuesday, new TimeSpan(8, 15, 0) },
         { DayOfWeek.Wednesday, new TimeSpan(8, 15, 0) },
         { DayOfWeek.Thursday, new TimeSpan(8, 15, 0) },
-        { DayOfWeek.Friday, new TimeSpan(5, 30, 0) }
+        { DayOfWeek.Friday, new TimeSpan(5, 30, 0) },
     };
 
     [ObservableProperty]

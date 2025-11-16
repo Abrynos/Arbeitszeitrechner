@@ -24,7 +24,7 @@ namespace Arbeitszeitrechner.Converters;
 internal abstract class NumericMinimumConverter<T> : MarkupExtension, IValueConverter where T : INumber<T>
 {
     /// <inheritdoc/>
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is not T val)
         {
@@ -40,7 +40,7 @@ internal abstract class NumericMinimumConverter<T> : MarkupExtension, IValueConv
     }
 
     /// <inheritdoc/>
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
 
     /// <inheritdoc/>
     public override object ProvideValue(IServiceProvider serviceProvider) => this;
