@@ -6,4 +6,8 @@
 
 ### Changes
 
-This is an automated release. A human-readable version should be available soon. In the meantime please refer to **[GitHub commits](https://github.com/Abrynos/Arbeitszeitrechner/commits/master)**.
+This is an automated release. A human-readable version should be available soon. In the meantime please refer to the **[commits](https://github.com/Abrynos/Arbeitszeitrechner/commits/master)**.
+
+### License
+
+This open-source application is available for free and licensed under the terms of the [GNU GENERAL PUBLIC LICENSE VERSION 2.0 ONLY](https://github.com/Abrynos/Arbeitszeitrechner/blob/master/LICENSE).
