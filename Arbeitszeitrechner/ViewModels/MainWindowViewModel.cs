@@ -1,4 +1,4 @@
-﻿// Copyright (C) 2025-2025 Sebastian Göls
+﻿// Copyright (C) 2025-2026 Sebastian Göls
 // 
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
