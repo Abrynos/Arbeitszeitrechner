@@ -38,6 +38,7 @@
         <Deterministic>true</Deterministic>
         <ErrorReport>none</ErrorReport>
         <NoWarn>CA1003;CA1028;CA1031;CA1040;CA1303;CA1309;CA1716;CA1724;CA1812;NU1507</NoWarn>
+        <WarningsNotAsErrors>$(WarningsNotAsErrors);NU1903</WarningsNotAsErrors>
     </PropertyGroup>
 
     <ItemGroup Label="Files to accompany the output">
