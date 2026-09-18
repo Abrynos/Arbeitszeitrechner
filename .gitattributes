@@ -4,7 +4,7 @@
 *.sh text eol=lf
 
 # dotnet
-*.sln merge=union working-tree-encoding=UTF-8 eol=lf
+*.slnx merge=union working-tree-encoding=UTF-8 eol=lf
 *.csproj merge=union working-tree-encoding=UTF-8 eol=lf
 # diff is custom for VisualStudio
 *.cs diff=csharp working-tree-encoding=UTF-8 eol=lf diff=csharp

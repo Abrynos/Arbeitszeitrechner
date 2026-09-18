@@ -1,0 +1,39 @@
+<Solution>
+
+    <Folder Name="/Build/">
+        <File Path="LICENSE"/>
+        <File Path="README.md"/>
+    </Folder>
+
+    <Folder Name="/Build/Dotnet/">
+        <File Path="Directory.Build.props"/>
+        <File Path="Directory.Packages.props"/>
+    </Folder>
+
+    <Folder Name="/Build/Git/">
+        <File Path=".gitattributes"/>
+        <File Path=".gitignore"/>
+    </Folder>
+
+    <Folder Name="/Build/GitHub/">
+        <File Path=".github/CONTRIBUTING.md"/>
+        <File Path=".github/PULL_REQUEST_TEMPLATE.md"/>
+        <File Path=".github/RELEASE_TEMPLATE.md"/>
+        <File Path=".github/renovate.json5"/>
+        <File Path=".github/SECURITY.md"/>
+    </Folder>
+
+    <Folder Name="/Build/GitHub/Issues/">
+        <File Path=".github/ISSUE_TEMPLATE/bug-report.yml"/>
+        <File Path=".github/ISSUE_TEMPLATE/config.yml"/>
+        <File Path=".github/ISSUE_TEMPLATE/documentation-improvement.yml"/>
+        <File Path=".github/ISSUE_TEMPLATE/feature-request.yml"/>
+    </Folder>
+
+    <Folder Name="/Build/GitHub/Pipelines/">
+        <File Path=".github/workflows/ci.yml"/>
+    </Folder>
+
+    <Project Path="Arbeitszeitrechner/Arbeitszeitrechner.csproj"/>
+
+</Solution>
