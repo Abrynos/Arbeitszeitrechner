@@ -101,7 +101,7 @@ internal sealed partial class MainWindowViewModel : ViewModelBase, IDisposable, 
         }
 
         Database.PropertyChanged += OnDatabaseChanged;
-        IsTimeTimer = new Timer(OnIsTimeChanged, null, TimeSpan.Zero, TimeSpan.FromSeconds(5));
+        IsTimeTimer = new Timer(OnTimeChanged, null, TimeSpan.Zero, TimeSpan.FromSeconds(5));
     }
 
     /// <inheritdoc/>
@@ -162,10 +162,12 @@ internal sealed partial class MainWindowViewModel : ViewModelBase, IDisposable, 
         });
     }
 
-    private void OnIsTimeChanged(object? _)
+    private void OnTimeChanged(object? _)
     {
         OnPropertyChanged(nameof(IsTime));
-        OnPropertyChanged(nameof(TargetWorkHours)); // in case we only hibernate/sleep over night and the next day is a friday
+        // in case we only hibernate/sleep overnight and the next day is a friday
+        OnPropertyChanged(nameof(TargetWorkHours));
+        OnPropertyChanged(nameof(EndTime));
     }
 
     private void OnStartTimeChanged()
